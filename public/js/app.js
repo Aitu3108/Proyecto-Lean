@@ -1809,3 +1809,72 @@
             // Inicialización general
             // Note: El arranque primario "cold" de la informacion ahora está anclado en renderSavedItems() post-login
             // por seguridad y para mantener la coherencia de datos con cuentas deslogueadas.
+
+            /* --- Settings UI Logic --- */
+            function openSettings() {
+                document.getElementById('settingsModal').style.display = 'flex';
+                document.getElementById('themeSelect').value = document.documentElement.getAttribute('data-theme') || 'carmesi';
+                document.getElementById('layoutSelect').value = document.documentElement.getAttribute('data-layout') || 'normal';
+            }
+            
+            function closeSettings() {
+                document.getElementById('settingsModal').style.display = 'none';
+            }
+            
+            
+            function saveSettings() {
+                const theme = document.getElementById('themeSelect').value;
+                const layout = document.getElementById('layoutSelect').value;
+                
+                document.documentElement.setAttribute('data-theme', theme);
+                document.documentElement.setAttribute('data-layout', layout);
+                
+                localStorage.setItem('appTheme', theme);
+                localStorage.setItem('appLayout', layout);
+                
+                closeSettings();
+            }
+
+            /* --- Draggable Universal Dashboard --- */
+            function initUniversalSortable() {
+                const gridOptions = {
+                    animation: 150,
+                    handle: '.drag-handle',
+                    ghostClass: 'sortable-ghost',
+                    dragClass: 'sortable-drag'
+                };
+
+                // Helper para inicializar grillas con persistencia
+                const initGrid = (id, groupName) => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        Sortable.create(el, Object.assign({}, gridOptions, {
+                            group: groupName,
+                            store: {
+                                get: function(sortable) {
+                                    var order = localStorage.getItem('sort_' + groupName);
+                                    return order ? order.split('|') : [];
+                                },
+                                set: function(sortable) {
+                                    var order = sortable.toArray();
+                                    localStorage.setItem('sort_' + groupName, order.join('|'));
+                                }
+                            }
+                        }));
+                    }
+                };
+
+                // Instanciar todas las grillas de la app
+                initGrid('calcGrid', 'calc_main');
+                initGrid('historyGrid', 'history_main');
+                initGrid('resumenStatsGrid', 'resumen_stats');
+                initGrid('adminFinancialGrid', 'admin_fin');
+                initGrid('adminAdvancedGrid', 'admin_adv');
+            }
+
+            // Iniciar sortable al cargar la página si el script fue cargado
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof Sortable !== 'undefined') {
+                    initUniversalSortable();
+                }
+            });

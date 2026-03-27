@@ -2,22 +2,33 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Desposte MediaRes</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=2">
     <!-- SheetJS (Excel Parser) -->
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <!-- Chart.js (Gráficos) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- HTML2PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <!-- Prevent FOUC -->
+    <script>
+        const theme = localStorage.getItem('appTheme') || 'carmesi';
+        const layout = localStorage.getItem('appLayout') || 'normal';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.setAttribute('data-layout', layout);
+    </script>
 </head>
 <body>
 
     <!-- Login Modal -->
     <div id="loginModal" class="modal" style="display: flex;">
         <div class="modal-content">
-            <h2 style="color:var(--primary); margin-bottom: 20px;">Acceso al Sistema</h2>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img src="img/logo.png" alt="Logo MediaRes" style="max-height: 90px; width: auto; object-fit: contain; margin-bottom: 10px;">
+                <h2 style="color:var(--primary); margin: 0;">Acceso al Sistema</h2>
+            </div>
             <div id="logoutMsg" style="color: #d32f2f; font-weight: bold; background: #ffebee; padding: 10px; border-radius: 4px; margin-bottom: 15px; display: none;">
                 Tu sesión ha sido cerrada por inactividad prolongada (60s) por seguridad.
             </div>
@@ -38,10 +49,42 @@
         </div>
     </div>
 
+    <div id="settingsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2 style="color:var(--primary); margin-bottom: 20px; display:flex; align-items:center; gap:8px;">
+                ⚙️ Preferencias
+            </h2>
+            <div class="form-group">
+                <label>Tema Visual</label>
+                <select id="themeSelect" style="width: 100%; padding: 10px; margin-top:5px; border:1px solid var(--border-color); border-radius:4px; font-size:16px; background:var(--card-bg); color:var(--text-main);">
+                    <option value="carmesi">Carmesi Clásico</option>
+                    <option value="dracula">Dracula (Oscuro)</option>
+                    <option value="hacker">Hacker Matrix</option>
+                    <option value="corporate">Azul Corporativo</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-top: 15px;">
+                <label>Densidad de Diseño</label>
+                <select id="layoutSelect" style="width: 100%; padding: 10px; margin-top:5px; border:1px solid var(--border-color); border-radius:4px; font-size:16px; background:var(--card-bg); color:var(--text-main);">
+                    <option value="normal">Normal (Espacioso)</option>
+                    <option value="compact">Compacto (Menos margenes)</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:25px;">
+                <button onclick="closeSettings()" style="flex:1; padding: 12px; background:transparent; color:var(--text-main); border:1px solid var(--border-color); border-radius:4px; cursor:pointer; font-weight:bold;">
+                    Cancelar
+                </button>
+                <button onclick="saveSettings()" style="flex:1; padding: 12px; background:var(--primary); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="container" id="mainContainer" style="display: none;">
         <header class="app-header">
             <div class="app-branding">
-                <div class="logo-icon">🍖</div>
+                <img src="img/logo.png" alt="Logo MediaRes" class="logo-image">
                 <h1 class="app-title">Desposte MediaRes</h1>
             </div>
             
@@ -66,6 +109,9 @@
 
             <div class="user-controls">
                 <span id="userGreeting" class="user-greeting"></span>
+                <button onclick="openSettings()" class="btn-settings" title="Preferencias" style="background: transparent; border: none; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: transform 0.2s;">
+                    ⚙️
+                </button>
                 <button onclick="cerrarSesion()" class="btn-logout">
                     Salir
                     <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
@@ -75,7 +121,13 @@
 
         <div id="calculatorTb" class="tab-content active">
 
-            <div class="header-inputs">
+            <!-- NUEVO GRID MODULAR -->
+            <div id="calcGrid" style="display: flex; flex-direction: column; gap: 15px;">
+
+                <!-- MODULO 1: DATOS INICIALES -->
+                <div class="module-card" data-id="calc-datos" style="background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; margin-bottom: 5px; font-size: 18px;">⋮⋮</div>
+                    <div class="header-inputs">
                 <div class="input-group">
                     <label for="cantidadMedias">Cant. de Medias Despostadas</label>
                     <input type="number" id="cantidadMedias" placeholder="Ej: 5" step="1" min="1" value="1">
@@ -101,14 +153,14 @@
                         onchange="procesarExcel(event)">
                 </div>
             </div>
+                </div> <!-- END MODULO 1 -->
 
-            <div class="view-toggle">
-                <button id="btnGrid" class="active" onclick="toggleView('grid')">Vista en Cuadrículas</button>
-                <button id="btnTable" onclick="toggleView('table')">Vista en Lista</button>
-            </div>
-
+                <!-- MODULO 2: CORTES ESTATICOS -->
+                <div class="module-card" data-id="calc-estaticos" style="background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: -15px;">⋮⋮</div>
+            
             <!-- Cortes Estáticos Inamovibles -->
-            <h3 style="margin-bottom: 10px; color: var(--primary-dark); font-size: 16px;">Piezas enteras</h3>
+            <h3 style="margin-bottom: 10px; margin-top: 15px; color: var(--primary-dark); font-size: 16px;">Piezas enteras</h3>
             <div class="static-cuts" id="staticCutsBlock">
                 
                 <div class="static-cut-item">
@@ -162,8 +214,18 @@ min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:v
                     </div>
                 </div>
             </div>
+                </div> <!-- END MODULO 2 -->
+
+                <!-- MODULO 3: CORTES DINAMICOS -->
+                <div class="module-card" data-id="calc-dinamicos" style="background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: -5px;">⋮⋮</div>
+
+            <div class="view-toggle" style="margin-top: 10px;">
+                <button id="btnGrid" class="active" onclick="toggleView('grid')">Vista en Cuadrículas</button>
+                <button id="btnTable" onclick="toggleView('table')">Vista en Lista</button>
+            </div>
             
-            <h3 style="margin-bottom: 10px; margin-top: 25px; color: var(--primary-dark); font-size: 16px;">Otros Cortes / Desglose Dinámico</h3>
+            <h3 style="margin-bottom: 10px; margin-top: 15px; color: var(--primary-dark); font-size: 16px;">Otros Cortes / Desglose Dinámico</h3>
 
             <!-- Render container for dynamically generated cuts -->
             <div id="cutsContainer">
@@ -187,6 +249,12 @@ min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:v
             <div class="warning" id="warningMsg">
                 ¡Atención! La suma de los cortes es mayor al peso total de la media res.
             </div>
+
+                </div> <!-- END MODULO 3 -->
+
+                <!-- MODULO 4: RESULTADOS -->
+                <div class="module-card" data-id="calc-resultados" style="background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: 5px;">⋮⋮</div>
 
             <div class="results">
                 <div class="result-row">
@@ -223,7 +291,7 @@ min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:v
                 </div>
             </div>
 
-            <div class="results hidden" id="rowCostoTotal" style="margin-top: 15px; background-color: #37474f;">
+            <div class="results hidden" id="rowCostoTotal" style="margin-top: 15px; border: 1px solid var(--border-color);">
                 <div class="result-row">
                     <span>Costo Total Estimado (Inversión):</span>
                     <span id="costoTotal">$0.00</span>
@@ -234,7 +302,7 @@ min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:v
                 </div>
             </div>
 
-            <div class="results hidden" id="rowIngresoTotal" style="margin-top: 15px; background-color: var(--primary-dark);">
+            <div class="results hidden" id="rowIngresoTotal" style="margin-top: 15px; border: 1px solid var(--border-color); border-left: 4px solid var(--primary);">
                 <div class="result-row">
                     <span>Ingreso Total Estimado (Ventas):</span>
                     <span id="ingresoTotal">$0.00</span>
@@ -255,6 +323,9 @@ min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:v
                 <button class="clear-btn" onclick="guardarReporte()" style="background-color: var(--primary);">Guardar Reporte</button>
                 <button class="clear-btn" onclick="enviarPorEmail()" style="background-color: #2196f3;">Enviar por Email</button>
             </div>
+                </div> <!-- END MODULO 4 -->
+
+            </div> <!-- END CALCGRID -->
         </div>
 
         <div id="savedTb" class="tab-content">
@@ -267,31 +338,45 @@ min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:v
                 </div>
             </div>
 
-            <!-- Offers Container -->
-            <div style="margin-bottom: 25px; border-bottom: 2px solid #eee; padding-bottom: 20px;">
-                <h3 style="color:var(--primary); margin-top: 0; margin-bottom: 15px;">Mis Grupos/Ofertas Guardadas</h3>
-                <div id="ofertasContainer" style="display:flex; flex-direction: column; gap: 10px;">
-                    <p style="color:#666; font-size: 13px; margin: 0;">No tienes grupos guardados aún. Tilda reportes abajo y guárdalos.</p>
+            <!-- HISTORY GRID -->
+            <div id="historyGrid" style="display: flex; flex-direction: column; gap: 15px;">
+                <!-- Modulo 1: Ofertas -->
+                <div class="module-card" data-id="hist-ofertas" style="background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: 5px;">⋮⋮</div>
+                    <div style="margin-bottom: 5px;">
+                        <h3 style="color:var(--primary); margin-top: 0; margin-bottom: 15px;">Mis Grupos/Ofertas Guardadas</h3>
+                        <div id="ofertasContainer" style="display:flex; flex-direction: column; gap: 10px;">
+                            <p style="color:var(--text-muted); font-size: 13px; margin: 0;">No tienes grupos guardados aún. Tilda reportes abajo y guárdalos.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Rango y Filtro -->
-            <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-end; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #eee;">
-                <div style="flex: 1;">
-                    <label style="display:block; margin-bottom: 5px; font-weight: bold; font-size: 13px;">Tildar masivamente desde:</label>
-                    <input type="date" id="filtroDesde" style="width:100%; padding: 8px; border: 1px solid #ddd; border-radius:4px; font-family:inherit;">
+                <!-- Modulo 2: Filtro -->
+                <div class="module-card" data-id="hist-filtro" style="background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: 5px;">⋮⋮</div>
+                    <div style="display: flex; gap: 15px; align-items: flex-end;">
+                        <div style="flex: 1;">
+                            <label style="display:block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color:var(--text-main);">Tildar masivamente desde:</label>
+                            <input type="date" id="filtroDesde" style="width:100%; padding: 8px; border: 1px solid var(--border-color); border-radius:4px; font-family:inherit; background:var(--card-bg); color:var(--text-main);">
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="display:block; margin-bottom: 5px; font-weight: bold; font-size: 13px; color:var(--text-main);">Hasta:</label>
+                            <input type="date" id="filtroHasta" style="width:100%; padding: 8px; border: 1px solid var(--border-color); border-radius:4px; font-family:inherit; background:var(--card-bg); color:var(--text-main);">
+                        </div>
+                        <div>
+                            <button onclick="seleccionarPorFechas()" style="background: var(--primary-dark); color: white; border: none; padding: 9px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Marcar Rango</button>
+                        </div>
+                    </div>
                 </div>
-                <div style="flex: 1;">
-                    <label style="display:block; margin-bottom: 5px; font-weight: bold; font-size: 13px;">Hasta:</label>
-                    <input type="date" id="filtroHasta" style="width:100%; padding: 8px; border: 1px solid #ddd; border-radius:4px; font-family:inherit;">
+
+                <!-- Modulo 3: Lista -->
+                <div class="module-card" data-id="hist-lista" style="background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: 5px;">⋮⋮</div>
+                    <div id="savedContainer" class="saved-list">
+                        <!-- Se inyecta desde JS -->
+                    </div>
                 </div>
-                <div>
-                    <button onclick="seleccionarPorFechas()" style="background: var(--primary-dark); color: white; border: none; padding: 9px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">Marcar Rango</button>
-                </div>
-            </div>
-            <div id="savedContainer" class="saved-list">
-                <!-- Se inyecta desde JS -->
-            </div>
+            </div> <!-- End History Grid -->
         </div>
 
         <div id="summaryTb" class="tab-content">
@@ -306,22 +391,26 @@ min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:v
                 </select>
             </div>
 
-            <div class="resumen-stats-grid">
-                <div class="stat-card">
+            <div class="resumen-stats-grid" id="resumenStatsGrid">
+                <div class="stat-card" data-id="stat-medias">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: -15px;">⋮⋮</div>
                     <h4>Total Medias</h4>
-                    <p class="value" id="sumMediasVal">0</p>
+                    <p class="value" id="sumMediasVal" style="color: var(--primary);">0</p>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-id="stat-kg">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: -15px;">⋮⋮</div>
                     <h4>Total Procesado</h4>
-                    <p class="value" id="sumKgVal">0.00 <span class="unit">kg</span></p>
+                    <p class="value" id="sumKgVal" style="color: var(--primary);">0.00 <span class="unit">kg</span></p>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-id="stat-merma">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: -15px;">⋮⋮</div>
                     <h4>Merma Total</h4>
-                    <p class="value" id="sumMermaVal">0.00 <span class="unit">kg</span></p>
+                    <p class="value" id="sumMermaVal" style="color: var(--primary);">0.00 <span class="unit">kg</span></p>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-id="stat-rendimiento">
+                    <div class="drag-handle" style="cursor: grab; color: var(--text-muted); text-align: right; font-size: 18px; margin-bottom: -15px;">⋮⋮</div>
                     <h4>Rend. Promedio</h4>
-                    <p class="value" id="avgRendVal">0.00 <span class="unit">%</span></p>
+                    <p class="value" id="avgRendVal" style="color: var(--primary);">0.00 <span class="unit">%</span></p>
                 </div>
             </div>
 
@@ -347,42 +436,49 @@ min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:v
             <div class="admin-dashboard" style="display: block;">
                 <h3 style="margin-bottom: 15px;">Dashboard Global de Rentabilidad</h3>
                 
-                <div class="admin-financial-grid">
-                    <div class="admin-card">
+                <div class="admin-financial-grid" id="adminFinancialGrid">
+                    <div class="admin-card" data-id="card-inversion">
+                        <div class="drag-handle" style="cursor: grab; color: #ccc; text-align: right; margin-bottom: -15px; font-size: 18px;">⋮⋮</div>
                         <h4>Inversión</h4>
                         <p class="val" id="admInvGlobal">$0</p>
                         <p class="sub-val" id="admTotalFaenadas">0 medias</p>
                     </div>
-                    <div class="admin-card" style="border-left-color: var(--primary);">
+                    <div class="admin-card" data-id="card-ventas" style="border-left-color: var(--primary);">
+                        <div class="drag-handle" style="cursor: grab; color: #ccc; text-align: right; margin-bottom: -15px; font-size: 18px;">⋮⋮</div>
                         <h4>Ventas</h4>
                         <p class="val" id="admVenGlobal">$0</p>
                         <p class="sub-val" id="admGananciaGlobal">Margen: $0</p>
                     </div>
-                    <div class="admin-card" style="border-left-color: #f44336;">
+                    <div class="admin-card" data-id="card-merma" style="border-left-color: #f44336;">
+                        <div class="drag-handle" style="cursor: grab; color: #ccc; text-align: right; margin-bottom: -15px; font-size: 18px;">⋮⋮</div>
                         <h4>Pérdida Merma</h4>
                         <p class="val" id="admMermaGlobal">0 kg</p>
                         <p class="sub-val" id="admCostoPerrdido">Costo: $0</p>
                     </div>
-                    <div class="admin-card" style="border-left-color: #2196f3;">
+                    <div class="admin-card" data-id="card-rendimiento" style="border-left-color: #2196f3;">
+                        <div class="drag-handle" style="cursor: grab; color: #ccc; text-align: right; margin-bottom: -15px; font-size: 18px;">⋮⋮</div>
                         <h4>Rend. General</h4>
                         <p class="val" id="admRendGlobal">0%</p>
                         <p class="sub-val" id="admDescartesGlobal">Sebo: 0% | Hueso: 0%</p>
                     </div>
-                    <div class="admin-card" style="border-left-color: #9c27b0;">
+                    <div class="admin-card" data-id="card-markup" style="border-left-color: #9c27b0;">
+                        <div class="drag-handle" style="cursor: grab; color: #ccc; text-align: right; margin-bottom: -15px; font-size: 18px;">⋮⋮</div>
                         <h4>Mark Up Global</h4>
                         <p class="val" id="admMarkupGlobal">0%</p>
                     </div>
                 </div>
 
-                <div class="admin-advanced-metrics">
-                    <div class="advanced-card">
+                <div class="admin-advanced-metrics" id="adminAdvancedGrid">
+                    <div class="advanced-card" data-id="card-estrellas">
+                        <div class="drag-handle" style="cursor: grab; color: #ccc; text-align: right; margin-bottom: 5px; font-size: 18px;">⋮⋮</div>
                         <h4>🏆 Top Cortes Estrella (Mejor Margen)</h4>
                         <ul id="listaCortesEstrella" class="metric-list">
                             <!-- JS inyectado -->
                         </ul>
                     </div>
                     
-                    <div class="advanced-card">
+                    <div class="advanced-card" data-id="card-criticos">
+                        <div class="drag-handle" style="cursor: grab; color: #ccc; text-align: right; margin-bottom: 5px; font-size: 18px;">⋮⋮</div>
                         <h4>🚨 Cortes Críticos o en Pérdida</h4>
                         <ul id="listaCortesPerdida" class="metric-list">
                             <!-- JS inyectado -->
