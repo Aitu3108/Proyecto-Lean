@@ -1,0 +1,315 @@
+{
+    "id": "desglose_1774555386032.json",
+    "name": "26-03",
+    "resumenTotalkg": "10944.40 kg",
+    "resumenMerma": "244.60 kg (2.19%)",
+    "resumenRendimiento": "77.79%",
+    "cantidadMedias": "110",
+    "pesoTotal": "11189",
+    "cuts": [
+        {
+            "name": "PARRILLERO",
+            "kg": "",
+            "costo": "",
+            "venta": "",
+            "isManual": false
+        },
+        {
+            "name": "MOCHO",
+            "kg": "",
+            "costo": "",
+            "venta": "",
+            "isManual": false
+        },
+        {
+            "name": "PECHO",
+            "kg": "",
+            "costo": "",
+            "venta": "",
+            "isManual": false
+        },
+        {
+            "name": "BIFE ANCHO XKG",
+            "kg": "353.75",
+            "costo": "12361.47",
+            "venta": "15399",
+            "isManual": true
+        },
+        {
+            "name": "ROAST BEEF XKG",
+            "kg": "428.2",
+            "costo": "13190.64",
+            "venta": "16499",
+            "isManual": true
+        },
+        {
+            "name": "TAPA PARRILLERA XKG",
+            "kg": "222.55",
+            "costo": "12813.74",
+            "venta": "15999",
+            "isManual": true
+        },
+        {
+            "name": "ASADO DE ORILLA XKG",
+            "kg": "0",
+            "costo": "12059.95",
+            "venta": "7999",
+            "isManual": true
+        },
+        {
+            "name": "TORTUGUITA XKG",
+            "kg": "163.15",
+            "costo": "13190.64",
+            "venta": "16499",
+            "isManual": true
+        },
+        {
+            "name": "TAPA DE NALGA XKG",
+            "kg": "171.75",
+            "costo": "14321.33",
+            "venta": "17499",
+            "isManual": true
+        },
+        {
+            "name": "CARNAZA COMUN XKG",
+            "kg": "0",
+            "costo": "6042.55",
+            "venta": "7999",
+            "isManual": true
+        },
+        {
+            "name": "AZOTILLO XKG",
+            "kg": "156.3",
+            "costo": "6042.55",
+            "venta": "7999",
+            "isManual": true
+        },
+        {
+            "name": "PICADA 1° CALIDAD XKG",
+            "kg": "354.6",
+            "costo": "6042.55",
+            "venta": "7999",
+            "isManual": true
+        },
+        {
+            "name": "VACIO XKG",
+            "kg": "406.9",
+            "costo": "18844.09",
+            "venta": "20999",
+            "isManual": true
+        },
+        {
+            "name": "MATAMBRE XKG",
+            "kg": "157",
+            "costo": "13596.68",
+            "venta": "17999",
+            "isManual": true
+        },
+        {
+            "name": "ENTRAÑA XKG",
+            "kg": "48.55",
+            "costo": "24927.87",
+            "venta": "32999",
+            "isManual": true
+        },
+        {
+            "name": "OSOBUCO / CHIQUIZUELA XKG",
+            "kg": "507.4",
+            "costo": "4154.02",
+            "venta": "5499",
+            "isManual": true
+        },
+        {
+            "name": "ESPINAZO XKG",
+            "kg": "202.7",
+            "costo": "3020.9",
+            "venta": "3999",
+            "isManual": true
+        },
+        {
+            "name": "PALETA XKG",
+            "kg": "606.05",
+            "costo": "13190.64",
+            "venta": "16499",
+            "isManual": true
+        },
+        {
+            "name": "PALOMITA XKG",
+            "kg": "96.15",
+            "costo": "13190.64",
+            "venta": "16499",
+            "isManual": true
+        },
+        {
+            "name": "CUADRIL XKG",
+            "kg": "365.35",
+            "costo": "14321.33",
+            "venta": "17499",
+            "isManual": true
+        },
+        {
+            "name": "PECETO XKG",
+            "kg": "187.4",
+            "costo": "17336.51",
+            "venta": "19999",
+            "isManual": true
+        },
+        {
+            "name": "COLITA DE CUADRIL XKG",
+            "kg": "120.65",
+            "costo": "21906.22",
+            "venta": "28999",
+            "isManual": true
+        },
+        {
+            "name": "BIFE C/LOMO ESPECIAL XKG",
+            "kg": "10.9",
+            "costo": "14352.09",
+            "venta": "18999",
+            "isManual": true
+        },
+        {
+            "name": "LOMO XKG",
+            "kg": "173.8",
+            "costo": "22661.63",
+            "venta": "29999",
+            "isManual": true
+        },
+        {
+            "name": "BOLA DE LOMO XKG",
+            "kg": "292.15",
+            "costo": "14321.33",
+            "venta": "17499",
+            "isManual": true
+        },
+        {
+            "name": "NALGA XKG",
+            "kg": "458.55",
+            "costo": "15828.92",
+            "venta": "18999",
+            "isManual": true
+        },
+        {
+            "name": "CUADRADA XKG",
+            "kg": "327.9",
+            "costo": "14321.33",
+            "venta": "17499",
+            "isManual": true
+        },
+        {
+            "name": "BIFE ANGOSTO XKG",
+            "kg": "703.7",
+            "costo": "12436.85",
+            "venta": "15499",
+            "isManual": true
+        },
+        {
+            "name": "HUESO FALDA XKG",
+            "kg": "258.05",
+            "costo": "226.62",
+            "venta": "300",
+            "isManual": true
+        },
+        {
+            "name": "PICADA ESPECIAL XKG",
+            "kg": "117.05",
+            "costo": "13190.64",
+            "venta": "16499",
+            "isManual": true
+        },
+        {
+            "name": "SEBO XKG",
+            "kg": "1250",
+            "costo": "363",
+            "venta": "363",
+            "isManual": true
+        },
+        {
+            "name": "CABEZA DE LOMO XKG",
+            "kg": "1.85",
+            "costo": "22661.63",
+            "venta": "29999",
+            "isManual": true
+        },
+        {
+            "name": "ARAÑITAS XKG",
+            "kg": "16.65",
+            "costo": "13974.38",
+            "venta": "18499",
+            "isManual": true
+        },
+        {
+            "name": "FALDA PARRILLERA XKG",
+            "kg": "62.55",
+            "costo": "6420.25",
+            "venta": "8499",
+            "isManual": true
+        },
+        {
+            "name": "PRODUCCION CARNE",
+            "kg": "233",
+            "costo": "6042.55",
+            "venta": "7999",
+            "isManual": true
+        },
+        {
+            "name": "ASADO AMERICANO XKG",
+            "kg": "96.75",
+            "costo": "15107.5",
+            "venta": "19999",
+            "isManual": true
+        },
+        {
+            "name": "TAPA DE ASADO XKG",
+            "kg": "224.6",
+            "costo": "12841.26",
+            "venta": "16999",
+            "isManual": true
+        },
+        {
+            "name": "ASADO ENTERO XKG",
+            "kg": "1152.7",
+            "costo": "12059.95",
+            "venta": "13999",
+            "isManual": true
+        },
+        {
+            "name": "DECOMISO XKG",
+            "kg": "",
+            "costo": "",
+            "venta": "",
+            "isManual": true
+        },
+        {
+            "name": "Produ cuadrada",
+            "kg": "3",
+            "costo": "14352.09",
+            "venta": "18999",
+            "isManual": true
+        },
+        {
+            "name": "Produ Bola de Lomo",
+            "kg": "12",
+            "costo": "14352.09",
+            "venta": "18999",
+            "isManual": true
+        },
+        {
+            "name": "PICANHA",
+            "kg": "10.75",
+            "costo": "22613.06",
+            "venta": "29999",
+            "isManual": true
+        },
+        {
+            "name": "HUESO",
+            "kg": "990",
+            "costo": "24.2",
+            "venta": "24.2",
+            "isManual": true
+        }
+    ],
+    "creadoPor": "lcalderon",
+    "fechaCreacion": "2026-03-26T20:10:54.117Z",
+    "fechaActualizacion": "2026-03-26T20:10:54.117Z"
+}

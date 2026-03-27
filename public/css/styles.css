@@ -978,3 +978,83 @@
               text-align: center;
               font-size: 14px;
           }
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+    }
+
+    .container {
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .app-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .user-controls {
+        justify-content: space-between;
+    }
+
+    .nav-tabs {
+        flex-direction: column;
+    }
+
+    .nav-tabs .tab-btn {
+        width: 100%;
+        justify-content: center;
+        border-radius: 6px;
+    }
+
+    .nav-tabs .tab-btn.active {
+        border-bottom: none;
+        border-left: 4px solid var(--primary);
+    }
+
+    .header-inputs {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .cuts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .static-cut-item {
+        min-width: 100%;
+    }
+
+    .add-concept-row {
+        flex-direction: column;
+    }
+
+    .add-concept button {
+        width: 100%;
+        margin-left: 0 !important;
+        margin-top: 5px;
+    }
+
+    #tableView {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    .admin-advanced-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .resumen-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+}

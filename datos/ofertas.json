@@ -1,0 +1,22 @@
+[
+  {
+    "id": "mn6b9zy6-su1e5hb",
+    "nombre": "Oferta dia del padre",
+    "ids_desgloses": [
+      "desglose_1774288375382.json",
+      "desglose_1774288348741.json",
+      "desglose_1773866161375.json"
+    ],
+    "fechaCreacion": "2026-03-25T17:22:23.166Z",
+    "creadoPor": "lcalderon"
+  },
+  {
+    "id": "mn7wrop3-1cgnssz",
+    "nombre": "Oferta fin de marzo",
+    "ids_desgloses": [
+      "desglose_1774555386032.json"
+    ],
+    "fechaCreacion": "2026-03-26T20:11:46.503Z",
+    "creadoPor": "lcalderon"
+  }
+]
