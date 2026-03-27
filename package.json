@@ -1,0 +1,13 @@
+{
+  "name": "desglose-media-res",
+  "version": "1.0.0",
+  "description": "Sistema de registro de desglose",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  }
+}

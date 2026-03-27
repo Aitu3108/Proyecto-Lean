@@ -1,0 +1,179 @@
+﻿  <body>
+  
+      <!-- Login Modal -->
+      <div id="loginModal" class="modal" style="display: flex;">
+          <div class="modal-content">
+              <h2 style="color:var(--primary); margin-bottom: 20px;">Acceso al Sistema</h2>
+              <div id="logoutMsg" style="color: #d32f2f; font-weight: bold; background: #ffebee; padding: 10px; 
+border-radius: 4px; margin-bottom: 15px; display: none;">
+                  Tu sesiÃ³n ha sido cerrada por inactividad prolongada (60s) por seguridad.
+              </div>
+              <div class="form-group">
+                  <label>Usuario</label>
+                  <input type="text" id="loginUser" placeholder="Escribe tu usuario"
+                      style="width: 100%; padding: 10px; margin-top:5px; border:1px solid #ccc; border-radius:4px;">
+              </div>
+              <div class="form-group" style="margin-top: 15px;">
+                  <label>ContraseÃ±a</label>
+                  <input type="password" id="loginPass" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                      style="width: 100%; padding: 10px; margin-top:5px; border:1px solid #ccc; border-radius:4px;">
+              </div>
+              <button onclick="login()"
+                  style="width: 100%; padding: 12px; margin-top: 25px; background:var(--primary); color:white; 
+border:none; border-radius:4px; cursor:pointer; font-weight:bold; font-size:16px;">
+                  Ingresar
+              </button>
+          </div>
+      </div>
+  
+      <div class="container" id="mainContainer" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <span id="userGreeting" style="font-weight: bold; color: var(--text-muted);"></span>
+              <button onclick="cerrarSesion()"
+                  style="background: none; border: none; color: #d32f2f; cursor: pointer; text-decoration: 
+underline;">Cerrar
+                  SesiÃ³n</button>
+          </div>
+  
+          <div class="tabs">
+              <button class="tab-btn active" onclick="switchTab('calculatorTb')">Nuevo Registro</button>
+              <button class="tab-btn" onclick="switchTab('savedTb')">Historial Guardado</button>
+              <button class="tab-btn" onclick="switchTab('summaryTb')">Resumen General</button>
+              <button class="tab-btn" id="adminTabBtn" onclick="switchTab('adminTb')"
+                  style="display: none; background-color:#ffeb3b; color:#555;">ðŸ‘‘ Panel Admin</button>
+          </div>
+  
+          <div id="calculatorTb" class="tab-content active">
+              <h1>Desposte MediaRes</h1>
+  
+              <div class="header-inputs">
+                  <div class="input-group">
+                      <label for="cantidadMedias">Cant. de Medias Despostadas</label>
+                      <input type="number" id="cantidadMedias" placeholder="Ej: 5" step="1" min="1" value="1">
+                  </div>
+                  <div class="input-group">
+                      <label for="pesoTotal">Total Kg Despostados (Peso Total)</label>
+                      <input type="number" id="pesoTotal" placeholder="Ej: 550.5" step="0.1" min="0">
+                  </div>
+              </div>
+  
+              <div class="add-concept">
+                  <label for="nuevoCorteNombre">AÃ±adir Concepto Manual (Corte especial, Hueso extra, Desperdicio,
+                      etc.):</label>
+                  <div class="add-concept-row">
+                      <input type="text" id="nuevoCorteNombre" placeholder="Ej: Recortes extras...">
+                      <button onclick="agregarConcepto()">AÃ±adir Concepto</button>
+  
+                      <button id="btnImportExcel" onclick="document.getElementById('fileExcel').click()"
+                          style="background:var(--primary-dark); margin-left:15px; display:flex; gap:8px; 
+align-items:center;">
+                          ðŸ“Š Importar Excel
+                      </button>
+                      <input type="file" id="fileExcel" accept=".xls,.xlsx" style="display:none"
+                          onchange="procesarExcel(event)">
+                  </div>
+              </div>
+  
+              <div class="view-toggle">
+                  <button id="btnGrid" class="active" onclick="toggleView('grid')">Vista en CuadrÃ­culas</button>
+                  <button id="btnTable" onclick="toggleView('table')">Vista en Lista</button>
+              </div>
+  
+              <!-- Cortes EstÃ¡ticos Inamovibles -->
+              <h3 style="margin-bottom: 10px; color: var(--primary-dark); font-size: 16px;">Piezas enteras</h3>
+              <div class="static-cuts" id="staticCutsBlock">
+                  
+                  <div class="static-cut-item">
+                      <label class="static-cut-header" for="fix_parr">PARRILLERO</label>
+                      <input type="number" id="fix_parr" class="cut-input" oninput="calcularTotales()" step="0.1" 
+min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:var(--primary); background:#f0f8ff; 
+text-align:center; font-size:16px; padding:8px;">
+                      <div class="percentage" id="perc_fix_parr" style="text-align:center;"></div>
+                      <div class="static-prices">
+                          <div>
+                              <label>Precio Costo</label>
+                              <input type="number" id="costo_fix_parr" class="costo-input" oninput="calcularTotales()" 
+step="1" min="0" placeholder="$0">
+                          </div>
+                          <div>
+                              <label>Precio Venta</label>
+                              <input type="number" id="venta_fix_parr" class="venta-input" oninput="calcularTotales()" 
+step="1" min="0" placeholder="$0">
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class="static-cut-item">
+                      <label class="static-cut-header" for="fix_mocho">MOCHO</label>
+                      <input type="number" id="fix_mocho" class="cut-input" oninput="calcularTotales()" step="0.1" 
+min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:var(--primary); background:#f0f8ff; 
+text-align:center; font-size:16px; padding:8px;">
+                      <div class="percentage" id="perc_fix_mocho" style="text-align:center;"></div>
+                      <div class="static-prices">
+                          <div>
+                              <label>Precio Costo</label>
+                              <input type="number" id="costo_fix_mocho" class="costo-input" 
+oninput="calcularTotales()" step="1" min="0" placeholder="$0">
+                          </div>
+                          <div>
+                              <label>Precio Venta</label>
+                              <input type="number" id="venta_fix_mocho" class="venta-input" 
+oninput="calcularTotales()" step="1" min="0" placeholder="$0">
+                          </div>
+                      </div>
+                  </div>
+  
+                  <div class="static-cut-item">
+                      <label class="static-cut-header" for="fix_pecho">PECHO</label>
+                      <input type="number" id="fix_pecho" class="cut-input" oninput="calcularTotales()" step="0.1" 
+min="0" placeholder="0.0 kg" style="margin-bottom:5px; font-weight:bold; color:var(--primary); background:#f0f8ff; 
+text-align:center; font-size:16px; padding:8px;">
+                      <div class="percentage" id="perc_fix_pecho" style="text-align:center;"></div>
+                      <div class="static-prices">
+                          <div>
+                              <label>Precio Costo</label>
+                              <input type="number" id="costo_fix_pecho" class="costo-input" 
+oninput="calcularTotales()" step="1" min="0" placeholder="$0">
+                          </div>
+                          <div>
+                              <label>Precio Venta</label>
+                              <input type="number" id="venta_fix_pecho" class="venta-input" 
+oninput="calcularTotales()" step="1" min="0" placeholder="$0">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              
+              <h3 style="margin-bottom: 10px; margin-top: 25px; color: var(--primary-dark); font-size: 16px;">Otros 
+Cortes / Desglose DinÃ¡mico</h3>
+  
+              <!-- Render container for dynamically generated cuts -->
+              <div id="cutsContainer">
+                  <div class="cuts-grid" id="gridView"></div>
+  
+                  <table id="tableView">
+                      <thead>
+                          <tr>
+                              <th>Corte</th>
+                              <th>Kg Obtenidos</th>
+                              <th>Costo/Kg</th>
+                              <th>Venta/Kg</th>
+                              <th>Rendimiento (%)</th>
+                          </tr>
+                      </thead>
+                      <tbody id="tableBody"></tbody>
+                  </table>
+              </div>
+  
+              <div class="warning" id="warningMsg">
+                  Â¡AtenciÃ³n! La suma de los cortes es mayor al peso total de la media res.
+              </div>
+  
+              <div class="results">
+                  <div class="result-row">
+                      <span>Total de Cortes (Kg):</span>
+                      <span id="totalkg">0.00 kg</span>
+                  </div>
+                  <div class="result-row">
+
+
